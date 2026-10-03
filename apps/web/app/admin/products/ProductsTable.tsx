@@ -27,7 +27,7 @@ export function ProductsTable({ products, categories, onRefresh }: { products: A
   const handleDelete = async (id: string) => {
     if (window.confirm('Are you sure you want to delete this product?')) {
       try {
-        const res = await fetch(`http://localhost:5000/api/products/${id}`, {
+        const res = await fetch(`https://alwarfurniture.in/api/products/${id}`, {
           method: 'DELETE',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -81,7 +81,7 @@ export function ProductsTable({ products, categories, onRefresh }: { products: A
               <tr key={product.id} className="hover:bg-neutral-50 transition-colors">
                 <td className="px-6 py-4 font-medium text-neutral-900">{product.name}</td>
                 <td className="px-6 py-4 text-neutral-600">{product.category}</td>
-                <td className="px-6 py-4">₹{product.price.toLocaleString('en-IN')}</td>
+                <td className="px-6 py-4">₹{Number(product.price).toLocaleString('en-IN')}</td>
                 <td className="px-6 py-4">
                   {product.stock > 0 ? (
                     <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">
@@ -95,7 +95,7 @@ export function ProductsTable({ products, categories, onRefresh }: { products: A
                 </td>
                 <td className="px-6 py-4 text-right">
                   <div className="flex items-center justify-end gap-2">
-                    <Link href={`/admin/products/${product.id}`} className="p-2 text-neutral-500 hover:text-amber-600 hover:bg-amber-50 rounded-md transition-colors">
+                    <Link href={`/admin/product-edit?id=${product.id}`} className="p-2 text-neutral-500 hover:text-amber-600 hover:bg-amber-50 rounded-md transition-colors">
                       <Edit2 className="w-4 h-4" />
                     </Link>
                     <button className="p-2 text-neutral-500 hover:text-red-600 hover:bg-red-50 rounded-md transition-colors" onClick={() => handleDelete(product.id)}>
