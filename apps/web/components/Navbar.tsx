@@ -1,14 +1,14 @@
-﻿'use client';
+
+'use client';
 
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, User, Heart, Search, PhoneCall, ChevronDown, Menu, X, Truck } from 'lucide-react';
+import { ShoppingCart, User, Heart, Search, ChevronDown, Menu, X } from 'lucide-react';
 import { useStore, useAuthStore, useWishlistStore } from '../lib/store';
 import { CartDrawer } from './ui/CartDrawer';
 import { cn } from '@/lib/utils';
 import { usePathname, useRouter } from 'next/navigation';
-
 import { isCategoryHidden, slugifyCategory } from '@/lib/hidden-categories';
 
 type DbCategory = {
@@ -63,31 +63,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   return (
     <>
       <header className="sticky top-0 z-50 w-full flex flex-col bg-white shadow-sm">
-        {/* Top Utility Bar */}
-        <div className="bg-gray-100 text-xs text-gray-600 border-b border-gray-200 overflow-x-auto no-scrollbar">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 min-h-[2rem] flex justify-between items-center whitespace-nowrap py-1 gap-4">
-            <div className="flex items-center space-x-3 sm:space-x-4">
-              <Link href="/franchise" className="hover:text-brand-dark transition-colors">Franchise Enquiry</Link>
-              <span className="text-gray-300 hidden sm:inline">|</span>
-              <Link href="/warranty" className="hover:text-brand-dark transition-colors">Warranty Registration</Link>
-              <span className="text-gray-300 hidden sm:inline">|</span>
-              <Link href="/track-order" className="hover:text-brand-dark transition-colors text-brand-dark font-medium">Track your order</Link>
-            </div>
-            <div className="flex items-center space-x-3 sm:space-x-4">
-              <a href="tel:7372916233" className="flex items-center hover:text-brand-dark transition-colors font-medium">
-                <PhoneCall className="w-3 h-3 mr-1" />
-                7372916233
-              </a>
-              <span className="text-gray-300">|</span>
-              {mounted && user ? (
-                <Link href="/profile" className="hover:text-brand-dark transition-colors">Hi, {user.name?.split(' ')[0] || 'User'}</Link>
-              ) : (
-                <Link href="/login" className="hover:text-brand-dark transition-colors">Login</Link>
-              )}
-            </div>
-          </div>
-        </div>
-
         {/* Main Header */}
         <div className="bg-brand-dark text-white relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center relative">
@@ -101,8 +76,8 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
               {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
             </button>
 
-            {/* Logo */}
-            <Link href="/" className="flex items-center absolute left-1/2 -translate-x-1/2 lg:static lg:translate-x-0">
+            {/* Logo - Left aligned */}
+            <Link href="/" className="flex items-center">
               <Image 
                 src="/icon.jpg" 
                 alt="Alwar Furniture Logo" 
@@ -111,84 +86,72 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
                 className="w-12 h-12 md:w-16 md:h-16 rounded-full border-2 border-brand-accent shadow-md object-cover"
                 priority
               />
-              <div className="hidden lg:flex flex-col ml-3">
-                <span className="font-serif font-bold text-2xl tracking-wide text-brand-accent leading-none">
+              <div className="hidden sm:flex flex-col ml-3">
+                <span className="font-serif font-bold text-xl md:text-2xl tracking-wide text-brand-accent leading-none">
                   Alwar Furniture
                 </span>
-                <span className="text-[10px] uppercase tracking-[0.2em] text-gray-300 mt-1">
+                <span className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-300 mt-1">
                   Premium Wooden Craft
                 </span>
               </div>
             </Link>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center h-full">
-              <Link href="/" className="px-5 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
+            {/* Desktop Navigation - Categories directly on navbar */}
+            <nav className="hidden lg:flex items-center h-full gap-1 ml-6 flex-1">
+              <Link href="/" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
                 Home
               </Link>
-              <Link href="/products" className="px-5 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
+              <Link href="/products" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
                 Shop
               </Link>
-              
-              {/* Categories Mega Menu */}
-              <div 
-                className="h-full group"
-                onMouseEnter={() => setActiveCategory('menu')}
-                onMouseLeave={() => setActiveCategory(null)}
-              >
-                <div className="px-5 text-sm font-bold uppercase tracking-wider text-white group-hover:text-brand-accent transition-colors h-full flex items-center cursor-pointer border-b-2 border-transparent group-hover:border-brand-accent gap-1">
-                  Categories
-                  <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", activeCategory === 'menu' && "rotate-180")} />
-                </div>
+              <Link href="/about" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
+                About Us
+              </Link>
+              <Link href="/resources" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
+                Resources
+              </Link>
+              <Link href="/testimonials" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
+                Testimonials
+              </Link>
 
-                {/* Dropdown Content */}
-                {activeCategory === 'menu' && (
-                  <div className="absolute top-20 left-0 w-full bg-white shadow-xl rounded-b-lg overflow-hidden border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200 z-50">
-                    <div className="max-w-7xl mx-auto flex bg-white">
-                      {/* Categories List Column */}
-                      <div className="w-1/4 bg-gray-50 p-6 border-r border-gray-100 flex flex-col gap-2">
-                        <h3 className="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-3">Categories</h3>
-                        {categories.map((c) => (
-                          <Link 
-                            key={c.name}
-                            href={c.href}
-                            className="text-gray-700 hover:text-brand-dark hover:bg-white hover:shadow-sm px-4 py-2.5 rounded-md transition-all text-sm font-medium flex justify-between items-center group/item"
-                          >
-                            {c.name}
-                            <span className="opacity-0 group-hover/item:opacity-100 transition-opacity text-brand-accent">→</span>
-                          </Link>
-                        ))}
-                        <Link href="/products" className="mt-2 text-brand-accent hover:text-brand-dark text-sm font-bold underline px-4 py-2 transition-colors">
-                          View All Products
+              {/* Categories */}
+              {categories.slice(0, 3).map(c => (
+                <Link key={c.name} href={c.href} className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent whitespace-nowrap">
+                  {c.name}
+                </Link>
+              ))}
+              
+              {categories.length > 3 && (
+                <div 
+                  className="h-full group relative"
+                  onMouseEnter={() => setActiveCategory('More')}
+                  onMouseLeave={() => setActiveCategory(null)}
+                >
+                  <button className="px-3 text-sm font-bold uppercase tracking-wider text-white group-hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent group-hover:border-brand-accent gap-1 whitespace-nowrap">
+                    More Categories
+                    <ChevronDown className={cn("w-4 h-4 transition-transform duration-200", activeCategory === 'More' && "rotate-180")} />
+                  </button>
+
+                  {/* Dropdown Content */}
+                  {activeCategory === 'More' && (
+                    <div className="absolute top-[80px] left-0 w-64 bg-white shadow-xl rounded-b-lg overflow-hidden border border-gray-100 animate-in fade-in slide-in-from-top-2 duration-200 z-50 py-2">
+                      {categories.slice(3).map((c) => (
+                        <Link 
+                          key={c.name}
+                          href={c.href}
+                          className="block px-6 py-3 text-sm text-gray-700 hover:bg-brand-light hover:text-brand-dark transition-colors font-medium border-b border-gray-50 last:border-0"
+                        >
+                          {c.name}
                         </Link>
-                      </div>
-                      
-                      {/* Featured Image Column */}
-                      <div className="flex-1 p-8 bg-white flex flex-col justify-center items-center">
-                        <div className="relative aspect-video w-full max-w-2xl rounded-xl overflow-hidden mb-6 shadow-sm group/image">
-                          <Image 
-                            src="https://images.unsplash.com/photo-1555041469-a586c61ea9bc?auto=format&fit=crop&q=80&w=1200" 
-                            alt="Featured Category" 
-                            fill 
-                            className="object-cover group-hover/image:scale-105 transition-transform duration-500"
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-8">
-                            <div>
-                              <span className="bg-brand-accent text-brand-dark text-xs font-bold uppercase tracking-wider px-3 py-1 rounded mb-3 inline-block">Featured</span>
-                              <h3 className="text-white text-3xl font-serif font-bold mb-2">Premium Sofa Collection</h3>
-                              <p className="text-gray-200 text-sm max-w-md">Discover our handcrafted wooden sofas designed for elegance and ultimate comfort.</p>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
+                      ))}
                     </div>
-                  </div>
-                )}
-              </div>
+                  )}
+                </div>
+              )}
             </nav>
 
             {/* Right Icons */}
-            <div className="flex items-center space-x-5 lg:space-x-6 flex-shrink-0">
+            <div className="flex items-center space-x-4 lg:space-x-5 flex-shrink-0 ml-auto lg:ml-0">
               <button 
                 aria-label="Search" 
                 onClick={() => setIsSearchOpen(!isSearchOpen)}
@@ -267,6 +230,15 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
             </Link>
             <Link href="/products" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
               Shop All
+            </Link>
+            <Link href="/about" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
+              About Us
+            </Link>
+            <Link href="/resources" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
+              Resources
+            </Link>
+            <Link href="/testimonials" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
+              Testimonials
             </Link>
             
             <div className="mt-6 mb-2 px-4">

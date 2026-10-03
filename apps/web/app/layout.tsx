@@ -81,7 +81,7 @@ export default async function RootLayout({
               "@id": "",
               "url": "https://alwarfurniture.in",
               "telephone": "+918696112233",
-              "priceRange": "₹₹",
+              "priceRange": "Rs Rs ",
               "address": {
                 "@type": "PostalAddress",
                 "streetAddress": "Mev Bolding Road number 2, Aaya Nager, Shop number 16, Saniya Traders",
@@ -135,11 +135,12 @@ export default async function RootLayout({
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Shipping & Delivery</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Terms & Conditions</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Privacy Policy</Link></li>
-                    <li><Link href="#" className="hover:text-brand-accent transition-colors">Franchise Enquiry</Link></li>
+                    <li><Link href="/franchise" className="hover:text-brand-accent transition-colors">Franchise Enquiry</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Purchase & Returns</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Warranty Policy</Link></li>
-                    <li><Link href="#" className="hover:text-brand-accent transition-colors">Warranty Registration</Link></li>
-                    <li><Link href="#" className="hover:text-brand-accent transition-colors">Warranty Registration Mattress</Link></li>
+                    <li><Link href="/warranty" className="hover:text-brand-accent transition-colors">Warranty Registration</Link></li>
+                  <li><Link href="/track-order" className="hover:text-brand-accent transition-colors">Track your order</Link></li>
+                    <li><Link href="/warranty" className="hover:text-brand-accent transition-colors">Warranty Registration Mattress</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Furniture Care</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Downloads</Link></li>
                     <li><Link href="#" className="hover:text-brand-accent transition-colors">Sitemap</Link></li>
