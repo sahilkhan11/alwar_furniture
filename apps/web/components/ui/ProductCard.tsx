@@ -160,10 +160,10 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
             {product.compareAtPrice && product.compareAtPrice > product.price ? (
               <div className="flex items-center gap-2">
                 <span className="text-xl font-bold text-brand-dark">
-                  â‚¹{Number(product.price).toLocaleString()}
+                  Rs {Number(product.price).toLocaleString()}
                 </span>
                 <span className="text-sm text-gray-400 line-through">
-                  â‚¹{Number(product.compareAtPrice).toLocaleString()}
+                  Rs {Number(product.compareAtPrice).toLocaleString()}
                 </span>
                 <span className="text-xs font-bold text-emerald-600 bg-emerald-50 px-1.5 py-0.5 rounded">
                   {Math.round(((product.compareAtPrice - product.price) / product.compareAtPrice) * 100)}% OFF
@@ -171,7 +171,7 @@ export const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
               </div>
             ) : (
               <span className="text-xl font-bold text-brand-dark">
-                â‚¹{Number(product.price).toLocaleString()}
+                Rs {Number(product.price).toLocaleString()}
               </span>
             )}
             <span className="text-[10px] text-gray-500 mt-1">Inclusive of all taxes</span>
