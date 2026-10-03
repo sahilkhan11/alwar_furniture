@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { ShoppingCart, User, Heart, Search, ChevronDown, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Heart, Search, ChevronDown } from 'lucide-react';
 import { useStore, useAuthStore, useWishlistStore } from '../lib/store';
 import { CartDrawer } from './ui/CartDrawer';
 import { cn } from '@/lib/utils';
@@ -21,7 +21,6 @@ type DbCategory = {
 export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) => {
   const [mounted, setMounted] = useState(false);
   const [activeCategory, setActiveCategory] = useState<string | null>(null);
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
   
@@ -45,7 +44,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   }, []);
 
   useEffect(() => {
-    setIsMobileMenuOpen(false);
     setIsSearchOpen(false);
   }, [pathname]);
 
@@ -58,6 +56,12 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
     }
   };
 
+  const handleMobileCategorySelect = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    if (e.target.value) {
+      router.push(e.target.value);
+    }
+  };
+
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
 
   return (
@@ -67,15 +71,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
         <div className="bg-brand-dark text-white relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex justify-between items-center relative">
             
-            {/* Mobile Menu Toggle */}
-            <button 
-              className="lg:hidden text-white hover:text-brand-accent transition-colors -ml-2 p-2"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle Menu"
-            >
-              {isMobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
-
             {/* Logo - Left aligned */}
             <Link href="/" className="flex items-center">
               <Image 
@@ -95,6 +90,23 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
                 </span>
               </div>
             </Link>
+
+            {/* Mobile Categories Dropdown */}
+            <div className="lg:hidden ml-2 flex-1 max-w-[150px]">
+              <select 
+                className="w-full bg-brand-dark text-white border border-gray-600 rounded px-2 py-1 text-xs focus:outline-none"
+                onChange={handleMobileCategorySelect}
+                value=""
+              >
+                <option value="" disabled>Categories</option>
+                <option value="/products">Shop All</option>
+                {categories.map(c => (
+                  <option key={c.name} value={c.href}>{c.name}</option>
+                ))}
+                <option value="/about">About Us</option>
+                <option value="/resources">Resources</option>
+              </select>
+            </div>
 
             {/* Desktop Navigation - Categories directly on navbar */}
             <nav className="hidden lg:flex items-center h-full gap-1 ml-6 flex-1">
@@ -205,70 +217,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
           )}
         </div>
       </header>
-
-      {/* Mobile Sidebar Overlay */}
-      {isMobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black/50 lg:hidden" onClick={() => setIsMobileMenuOpen(false)} />
-      )}
-
-      {/* Mobile Sidebar */}
-      <div className={cn(
-        "fixed inset-y-0 left-0 z-50 w-4/5 max-w-sm bg-white shadow-2xl transform transition-transform duration-300 ease-in-out lg:hidden flex flex-col",
-        isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
-      )}>
-        <div className="p-4 border-b border-gray-100 flex justify-between items-center bg-gray-50">
-          <span className="font-serif font-bold text-xl text-brand-dark">Menu</span>
-          <button onClick={() => setIsMobileMenuOpen(false)} className="p-2 text-gray-500 hover:text-brand-dark bg-white rounded-full shadow-sm">
-            <X className="h-5 w-5" />
-          </button>
-        </div>
-        
-        <div className="flex-1 overflow-y-auto py-4">
-          <nav className="px-4 space-y-1">
-            <Link href="/" className="block px-4 py-3 rounded-lg text-brand-dark font-bold hover:bg-gray-50 transition-colors">
-              Home
-            </Link>
-            <Link href="/products" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
-              Shop All
-            </Link>
-            <Link href="/about" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
-              About Us
-            </Link>
-            <Link href="/resources" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
-              Resources
-            </Link>
-            <Link href="/testimonials" className="block px-4 py-3 rounded-lg text-gray-700 font-bold hover:bg-gray-50 hover:text-brand-dark transition-colors">
-              Testimonials
-            </Link>
-            
-            <div className="mt-6 mb-2 px-4">
-              <span className="text-xs font-bold text-gray-400 uppercase tracking-wider">Categories</span>
-            </div>
-            {categories.map(c => (
-              <Link 
-                key={c.name}
-                href={c.href} 
-                className="block px-4 py-2.5 text-gray-600 hover:text-brand-dark hover:bg-gray-50 rounded-lg transition-colors"
-              >
-                {c.name}
-              </Link>
-            ))}
-          </nav>
-
-          <div className="mt-8 px-4 border-t border-gray-100 pt-6">
-            <nav className="space-y-1">
-              <Link href="/profile" className="flex items-center px-4 py-3 text-gray-700 hover:text-brand-dark hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                <User className="h-5 w-5 mr-3 text-gray-400" />
-                My Account
-              </Link>
-              <Link href="/wishlist" className="flex items-center px-4 py-3 text-gray-700 hover:text-brand-dark hover:bg-gray-50 rounded-lg transition-colors font-medium">
-                <Heart className="h-5 w-5 mr-3 text-gray-400" />
-                Wishlist
-              </Link>
-            </nav>
-          </div>
-        </div>
-      </div>
 
       <CartDrawer />
     </>
