@@ -30,9 +30,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   const user = useAuthStore((state) => state.user);
   
   const pathname = usePathname();
-  if (pathname?.startsWith('/admin')) {
-    return null;
-  }
   const router = useRouter();
 
   const categories = (Array.isArray(dbCategories) ? dbCategories : [])
@@ -67,6 +64,10 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   };
 
   const totalItems = items.reduce((total, item) => total + item.quantity, 0);
+
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
 
   return (
     <>
