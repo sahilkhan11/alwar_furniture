@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const getApiUrl = () => {
-  return process.env.NEXT_PUBLIC_API_URL || 'https://occupied-mighty-excerpt-promote.trycloudflare.com';
+  return process.env.NEXT_PUBLIC_API_URL || 'https://alwarfurniture.in/api';
 };
 
 export const apiClient = axios.create({
