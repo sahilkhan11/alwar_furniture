@@ -33,7 +33,6 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   if (pathname?.startsWith('/admin')) {
     return null;
   }
-  const pathname = usePathname();
   const router = useRouter();
 
   const categories = (Array.isArray(dbCategories) ? dbCategories : [])

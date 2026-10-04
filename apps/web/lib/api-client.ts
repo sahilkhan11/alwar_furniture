@@ -1,7 +1,8 @@
-import axios from 'axios';
+﻿import axios from 'axios';
 
+// Get base URL for the API
 const getApiUrl = () => {
-  return process.env.NEXT_PUBLIC_API_URL || 'https://alwarfurniture.in/api';
+  return 'https://occupied-mighty-excerpt-promote.trycloudflare.com';
 };
 
 export const apiClient = axios.create({
@@ -11,19 +12,18 @@ export const apiClient = axios.create({
   },
 });
 
-// Add interceptor for auth token if needed
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    const storageString = localStorage.getItem('alwar-auth-storage');
-    if (storageString) {
+    const state = localStorage.getItem('alwar-auth-storage');
+    if (state) {
       try {
-        const authData = JSON.parse(storageString);
-        const token = authData?.state?.token;
+        const parsedState = JSON.parse(state);
+        const token = parsedState?.state?.token;
         if (token) {
           config.headers.Authorization = `Bearer ${token}`;
         }
       } catch (e) {
-        console.error('Failed to parse auth token', e);
+        console.error('Error parsing auth state:', e);
       }
     }
   }
