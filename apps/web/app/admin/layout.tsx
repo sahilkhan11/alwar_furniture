@@ -1,38 +1,71 @@
 ﻿import Link from 'next/link';
-import { LayoutDashboard, Package, ListTree, ShoppingCart, Users, LogOut, FileText, Image, Settings } from 'lucide-react';
+import { LayoutDashboard, Package, ListTree, ShoppingCart, Users, LogOut, FileText, Image, Settings, Search, ChevronLeft } from 'lucide-react';
 import { LogoutButton } from '../../components/LogoutButton';
 
 export default function AdminLayout({ children }: { children: React.ReactNode }) {
+  const menuItems = [
+    { name: 'Dashboard', icon: LayoutDashboard, href: '/admin' },
+    { name: 'Products', icon: Package, href: '/admin/products', hasSubmenu: true },
+    { name: 'Categories', icon: ListTree, href: '/admin/categories', hasSubmenu: true },
+    { name: 'Orders', icon: ShoppingCart, href: '/admin/orders', hasSubmenu: true },
+    { name: 'Users', icon: Users, href: '/admin/users' },
+    { name: 'Sliders', icon: Image, href: '/admin/sliders', hasSubmenu: true },
+    { name: 'Resources', icon: FileText, href: '/admin/resources', hasSubmenu: true },
+    { name: 'Settings', icon: Settings, href: '/admin/settings' },
+  ];
+
   return (
-    <div className="flex flex-col md:flex-row min-h-[calc(100vh-64px)] bg-neutral-100">
+    <div className="flex flex-col md:flex-row min-h-screen bg-slate-50">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-slate-900 text-white flex flex-col shrink-0 md:fixed md:left-0 md:top-[64px] md:h-[calc(100vh-64px)] z-10 shadow-lg">
-        <div className="p-4 font-bold text-lg border-b border-slate-800 flex justify-between items-center">
-          <span>Admin Dashboard</span>
-          <Link href="/" className="md:hidden text-sm text-brand-accent">Back to Store</Link>
+      <aside className="w-full md:w-[260px] bg-[#222831] text-gray-300 flex flex-col shrink-0 md:fixed md:left-0 md:top-0 md:h-screen z-50">
+        
+        {/* Branding / Top Area */}
+        <div className="h-16 flex items-center px-6 bg-[#1b1f26] text-white font-semibold tracking-wider text-sm border-b border-gray-800 shadow-sm relative">
+          ALWAR ADMIN
+          {/* A small white triangle pointer on the right border like in the image */}
+          <div className="hidden md:block absolute right-0 top-1/2 -translate-y-1/2 w-0 h-0 border-t-[8px] border-t-transparent border-b-[8px] border-b-transparent border-r-[8px] border-r-slate-50"></div>
         </div>
-        <nav className="flex flex-row md:flex-col p-4 gap-2 overflow-x-auto whitespace-nowrap no-scrollbar flex-1">
-          <Link href="/admin" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Overview</Link>
-          <Link href="/admin/products" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Products</Link>
-          <Link href="/admin/categories" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Categories</Link>
-          <Link href="/admin/orders" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Orders</Link>
-          <Link href="/admin/users" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Users</Link>
-          <Link href="/admin/sliders" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Sliders</Link>
-          <Link href="/admin/resources" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left">Resources</Link>
-          <Link href="/admin/settings" className="px-4 py-2 rounded bg-slate-800/50 hover:bg-slate-700 w-full text-left text-amber-500">Settings</Link>
-          
-          <div className="hidden md:block flex-1" /> {/* Spacer */}
-          <div className="hidden md:block w-full"><LogoutButton /></div>
+
+        {/* Search Bar matching image */}
+        <div className="px-4 py-3 bg-[#1e232b]">
+          <div className="relative">
+            <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-400" />
+            <input 
+              type="text" 
+              placeholder="Search..." 
+              className="w-full bg-transparent border-b border-gray-600 text-sm py-2 pl-9 pr-2 text-white focus:outline-none focus:border-gray-400"
+            />
+          </div>
+        </div>
+
+        {/* Navigation Links */}
+        <nav className="flex-1 overflow-y-auto py-2 no-scrollbar">
+          {menuItems.map((item, idx) => (
+            <Link 
+              key={idx} 
+              href={item.href} 
+              className="flex items-center px-6 py-3 hover:bg-[#2c3440] hover:text-white transition-colors group"
+            >
+              <item.icon className="w-4 h-4 mr-4 text-gray-400 group-hover:text-white" strokeWidth={2} />
+              <span className="flex-1 text-sm font-light tracking-wide">{item.name}</span>
+              {item.hasSubmenu && (
+                <ChevronLeft className="w-4 h-4 text-gray-500" strokeWidth={1.5} />
+              )}
+            </Link>
+          ))}
         </nav>
-        <div className="hidden md:block p-4 border-t border-slate-800">
-          <Link href="/" className="block text-center text-sm text-neutral-400 hover:text-white transition w-full">
-            &larr; Back to Store
+
+        {/* Footer Area */}
+        <div className="p-4 border-t border-gray-800 bg-[#1b1f26]">
+          <LogoutButton className="w-full flex items-center px-2 py-2 hover:bg-[#2c3440] hover:text-white rounded text-sm font-light transition-colors text-gray-300" />
+          <Link href="/" className="mt-2 flex items-center px-2 py-2 hover:bg-[#2c3440] hover:text-white rounded text-sm font-light transition-colors text-gray-300">
+            &larr; <span className="ml-2">Back to Store</span>
           </Link>
         </div>
       </aside>
 
       {/* Main Content */}
-      <main className="flex-1 w-full bg-neutral-100 md:ml-64 min-h-[calc(100vh-64px)]">
+      <main className="flex-1 w-full bg-slate-50 md:ml-[260px] min-h-screen">
         <div className="p-4 md:p-8">
           {children}
         </div>
