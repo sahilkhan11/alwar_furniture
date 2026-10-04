@@ -110,15 +110,9 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
 
             {/* Desktop Navigation - Categories directly on navbar */}
             <nav className="hidden lg:flex items-center h-full gap-1 ml-6 flex-1">
-              <Link href="/" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
-                Home
-              </Link>
-              <Link href="/products" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
-                Shop
-              </Link>
-              <Link href="/about" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
-                About Us
-              </Link>
+              
+              
+              
               <Link href="/resources" className="px-3 text-sm font-bold uppercase tracking-wider text-white hover:text-brand-accent transition-colors h-full flex items-center border-b-2 border-transparent hover:border-brand-accent">
                 Resources
               </Link>
@@ -171,7 +165,7 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
               >
                 <Search className="h-5 w-5" />
               </button>
-              <Link href="/profile" aria-label="Account" className="text-gray-200 hover:text-brand-accent transition-colors hidden sm:block">
+              <Link href="/profile" aria-label="Account" className="text-gray-200 hover:text-brand-accent transition-colors">
                 <User className="h-5 w-5" />
               </Link>
               <Link href="/wishlist" aria-label="Wishlist" className="text-gray-200 hover:text-brand-accent transition-colors hidden sm:flex items-center relative">

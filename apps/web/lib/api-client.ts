@@ -1,7 +1,11 @@
 import axios from 'axios';
 
+const getApiUrl = () => {
+  return process.env.NEXT_PUBLIC_API_URL || 'https://occupied-mighty-excerpt-promote.trycloudflare.com';
+};
+
 export const apiClient = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || 'http://localhost:5000/api',
+  baseURL: getApiUrl(),
   headers: {
     'Content-Type': 'application/json',
   },
@@ -10,9 +14,17 @@ export const apiClient = axios.create({
 // Add interceptor for auth token if needed
 apiClient.interceptors.request.use((config) => {
   if (typeof window !== 'undefined') {
-    const token = localStorage.getItem('token');
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+    const storageString = localStorage.getItem('alwar-auth-storage');
+    if (storageString) {
+      try {
+        const authData = JSON.parse(storageString);
+        const token = authData?.state?.token;
+        if (token) {
+          config.headers.Authorization = `Bearer ${token}`;
+        }
+      } catch (e) {
+        console.error('Failed to parse auth token', e);
+      }
     }
   }
   return config;
