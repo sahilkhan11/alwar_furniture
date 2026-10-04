@@ -28,6 +28,11 @@ export const Navbar = ({ dbCategories = [] }: { dbCategories?: DbCategory[] }) =
   const wishlistItems = useWishlistStore((state) => state.items);
   const openCart = useStore((state) => state.openCart);
   const user = useAuthStore((state) => state.user);
+  
+  const pathname = usePathname();
+  if (pathname?.startsWith('/admin')) {
+    return null;
+  }
   const pathname = usePathname();
   const router = useRouter();
 
